@@ -1,6 +1,3 @@
-Voici un exemple de **README.md** pour ton projet **IP-TRACKER** en se basant sur l’image et la fonctionnalité que tu m’as montrée :
-
-
 # 📡 IP-TRACKER
 
 IP-TRACKER est une application **WPF en C#** permettant de vérifier l’accessibilité d’une adresse IP et de récupérer diverses informations réseau et de localisation.
