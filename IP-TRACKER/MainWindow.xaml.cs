@@ -66,53 +66,7 @@ namespace IP_TRACKER
         private void IpTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (_isUpdating) return;
-            if (!(sender is TextBox tb))
-            {
-                e.Handled = true;
-                return;
-            }
-
-            string input = e.Text;
-
-            if (input == ".")
-            {
-                // délègue à ta méthode de vérification pour le point
-                e.Handled = !CanInsertDot(tb);
-                return;
-            }
-
-            if (IsDigit(input))
-            {
-                // Vérifier la limite totale de chiffres en tenant compte d'une sélection qui sera remplacée
-                string text = tb.Text ?? string.Empty;
-                int digitsAfterReplace = CountDigits(text);
-
-                if (tb.SelectionLength > 0)
-                {
-                    // on retire les chiffres qui seront remplacés par l'entrée courante
-                    string selected = text.Substring(tb.SelectionStart, tb.SelectionLength);
-                    digitsAfterReplace -= CountDigits(selected);
-                }
-
-                if (digitsAfterReplace >= MaxDigits)
-                {
-                    e.Handled = true;
-                    return;
-                }
-
-                // vérifier la longueur de l'octet courant (prend en compte la sélection)
-                if (!CanInsertDigitAtCaret(tb))
-                {
-                    e.Handled = true;
-                    return;
-                }
-
-                e.Handled = false;
-                return;
-            }
-
-            // tout le reste interdit
-            e.Handled = true;
+            e.Handled = false;
         }
 
         
