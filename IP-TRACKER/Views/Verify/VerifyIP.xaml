@@ -1,0 +1,35 @@
+﻿<Window x:Class="IP_TRACKER.Views.Verify.VerifyIP"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Recherche d'une adresse IP" Height="330" Width="420" WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Localisation d'une IP" FontWeight="Bold"
+               HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+        <TextBox x:Name="Ipgiven" Grid.Row="1" Width="240"
+                 HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" >
+            <Button x:Name="Search" Content="Rechercher" Width="120" Click="Search_IP_Click"/>
+            <ProgressBar x:Name="Progress" Width="140" Height="20" Margin="10,0,0,0"
+                         IsIndeterminate="True" Visibility="Collapsed" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="3" x:Name="StatusText" Text="" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+        <!-- Zone pour afficher le résultat -->
+        <TextBox x:Name="ResultBox" Grid.Row="4" Margin="0,10,0,0"
+         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+         IsReadOnly="True" FontFamily="Microsoft Sans Serif"
+         TextAlignment="Center"     
+         HorizontalContentAlignment="Center" />
+    </Grid>
+</Window>

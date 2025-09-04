@@ -1,0 +1,71 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Build Results
+*.dll
+*.exe
+*.app
+*.log
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono
+*.mdb
+
+# Rider
+.idea/
+*.sln.iml
+
+# DotCover
+.idea/.idea.DotSettings
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Tye
+.tye/
+
+# Logs
+*.log
+
+# Others
+*.tmp
+*.bak
+*.old
+
+# Test Results
+TestResults/
+*.TestResults.xml
+
+# Azure Pipelines
+.azure-pipelines/
+
+# Others (custom depending on your project)
+*.vs/
+*.db
