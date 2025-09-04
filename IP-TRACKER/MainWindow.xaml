@@ -5,8 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IP_TRACKER"
         mc:Ignorable="d"
-        Title="IP-TRACKER" Height="261" Width="526">
-    <Grid>
-        <Button Content="Traquer 1 ip" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="97" Height="40" Click="Show_Track_Single_IP"/>
+        Title="IP-TRACKER" Height="330" Width="420">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Localisation d'une IP" FontWeight="Bold"
+           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+        <TextBox x:Name="IpTextBox" 
+         Width="150" 
+         FontSize="14" 
+         HorizontalAlignment="Center"
+         TextChanged="IpTextBox_TextChanged"
+         PreviewTextInput="IpTextBox_PreviewTextInput" />
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" >
+            <Button x:Name="Search" Content="Rechercher" Width="120" Click="Search_IP_Click"/>
+            <ProgressBar x:Name="Progress" Width="140" Height="20" Margin="10,0,0,0"
+                     IsIndeterminate="True" Visibility="Collapsed" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="3" x:Name="StatusText" Text="" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+        <TextBox x:Name="ResultBox" Grid.Row="4" Margin="0,10,0,0"
+     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+     IsReadOnly="True" FontFamily="Microsoft Sans Serif"
+     TextAlignment="Center"     
+     HorizontalContentAlignment="Center" />
     </Grid>
 </Window>

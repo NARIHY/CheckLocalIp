@@ -11,7 +11,6 @@ namespace IP_TRACKER.NetworkPing
 {
     class SinglePing
     {
-        // singleton déjà en place (GetInstance etc.)
         private static SinglePing _instance;
         private static readonly object _lock = new object();
 

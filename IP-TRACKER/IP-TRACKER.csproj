@@ -12,7 +12,6 @@
   <ItemGroup>
     <Folder Include="Commons\" />
     <Folder Include="Export\" />
-    <Folder Include="Views\Main\" />
   </ItemGroup>
 
 </Project>
