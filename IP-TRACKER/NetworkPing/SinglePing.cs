@@ -1,11 +1,10 @@
-﻿// IP_TRACKER.NetworkPing.SinglePing (extrait important)
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text.Json;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace IP_TRACKER.NetworkPing
 {
@@ -16,7 +15,6 @@ namespace IP_TRACKER.NetworkPing
 
         private string ip;
 
-        // états remplis par Run()
         public bool IsUp { get; private set; }
         public string Hostname { get; private set; }
         public string Status { get; private set; }
@@ -27,31 +25,28 @@ namespace IP_TRACKER.NetworkPing
 
         public static SinglePing GetInstance(string ip)
         {
-            if (_instance == null)
+            lock (_lock)
             {
-                lock (_lock)
-                {
-                    if (_instance == null) _instance = new SinglePing(ip);
-                }
-            }
-            else
-            {
-                _instance.ip = ip;
+                if (_instance == null)
+                    _instance = new SinglePing(ip);
+                else
+                    _instance.ip = ip;
             }
             return _instance;
         }
 
-        // Ton Run qui remplit les propriétés (bloquant)
-        public void Run()
+        /// <summary>
+        /// Lance le ping et remplit les propriétés (async)
+        /// </summary>
+        public async Task RunAsync()
         {
-            IsUp = PingHost();
+            IsUp = await PingHostAsync();
             Hostname = IsUp ? GetHostName() : "Inaccessible";
             Status = IsUp ? "Actif" : "Inactif";
             Mac = IsUp ? GetMacAddress() : "Inconnu";
-            Location = GetLocation();
+            Location = await GetLocationAsync();
         }
 
-        // Retourne un résumé texte prêt à afficher
         public string GetResult()
         {
             return
@@ -65,17 +60,13 @@ Localisation   : {Location}
 Date/Heure     : {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
         }
 
-        // --- méthodes utilitaires (PingHost, GetHostName, GetMacAddress, GetLocation) ---
-        // (garde tes implémentations actuelles ici)
-        private bool PingHost()
+        private async Task<bool> PingHostAsync()
         {
             try
             {
-                using (Ping ping = new Ping())
-                {
-                    PingReply reply = ping.Send(ip, 2000);
-                    return reply.Status == IPStatus.Success;
-                }
+                using var ping = new Ping();
+                PingReply reply = await ping.SendPingAsync(ip, 2000);
+                return reply.Status == IPStatus.Success;
             }
             catch { return false; }
         }
@@ -103,18 +94,17 @@ Date/Heure     : {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
                     CreateNoWindow = true
                 };
 
-                using (Process process = Process.Start(psi))
-                using (var reader = process.StandardOutput)
+                using Process process = Process.Start(psi);
+                using var reader = process.StandardOutput;
+                string output = reader.ReadToEnd();
+                string[] lines = output.Split('\n');
+
+                foreach (string line in lines)
                 {
-                    string output = reader.ReadToEnd();
-                    string[] lines = output.Split('\n');
-                    foreach (string line in lines)
+                    if (line.Contains(ip))
                     {
-                        if (line.Contains(ip))
-                        {
-                            string[] parts = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                            if (parts.Length >= 2) return parts[1];
-                        }
+                        string[] parts = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length >= 2) return parts[1];
                     }
                 }
             }
@@ -122,23 +112,19 @@ Date/Heure     : {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
             return "Inconnu";
         }
 
-        private string GetLocation()
+        private async Task<string> GetLocationAsync()
         {
             try
             {
-                using (HttpClient client = new HttpClient())
-                {
-                    string url = $"https://ipinfo.io/{ip}/json";
-                    string json = client.GetStringAsync(url).Result;
+                using HttpClient client = new HttpClient();
+                string url = $"https://ipinfo.io/{ip}/json";
+                string json = await client.GetStringAsync(url);
 
-                    using (JsonDocument doc = JsonDocument.Parse(json))
-                    {
-                        string city = doc.RootElement.GetProperty("city").GetString();
-                        string region = doc.RootElement.GetProperty("region").GetString();
-                        string country = doc.RootElement.GetProperty("country").GetString();
-                        return $"{city}, {region}, {country}";
-                    }
-                }
+                using JsonDocument doc = JsonDocument.Parse(json);
+                string city = doc.RootElement.TryGetProperty("city", out var c) ? c.GetString() : "";
+                string region = doc.RootElement.TryGetProperty("region", out var r) ? r.GetString() : "";
+                string country = doc.RootElement.TryGetProperty("country", out var cn) ? cn.GetString() : "";
+                return $"{city}, {region}, {country}".Trim(',', ' ');
             }
             catch { return "Inconnue"; }
         }

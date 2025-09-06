@@ -1,42 +1,72 @@
 ﻿<Window x:Class="IP_TRACKER.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:IP_TRACKER"
-        mc:Ignorable="d"
-        Title="IP-TRACKER" Height="330" Width="420">
-    <Grid Margin="10">
+        Title="IP-TRACKER" Height="360" Width="460" WindowStartupLocation="CenterScreen"
+        Background="#F5F6FA">
+
+    <Grid Margin="15">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Localisation d'une IP" FontWeight="Bold"
-           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+        <!-- Titre -->
+        <TextBlock Text="Localisation et Diagnostic IP"
+                   FontSize="18" FontWeight="Bold"
+                   Foreground="#2C3E50"
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
-        <TextBox x:Name="IpTextBox" 
-         Width="150" 
-         FontSize="14" 
-         HorizontalAlignment="Center"
-         TextChanged="IpTextBox_TextChanged"
-         PreviewTextInput="IpTextBox_PreviewTextInput" />
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" >
-            <Button x:Name="Search" Content="Rechercher" Width="120" Click="Search_IP_Click"/>
-            <ProgressBar x:Name="Progress" Width="140" Height="20" Margin="10,0,0,0"
-                     IsIndeterminate="True" Visibility="Collapsed" />
+        <!-- IP Input -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+            <TextBox x:Name="Octet1" Width="50" Height="30" MaxLength="3"
+                     TextAlignment="Center" FontSize="14"
+                     PreviewTextInput="Octet_PreviewTextInput"
+                     TextChanged="Octet_TextChanged"
+                     PreviewKeyDown="Octet_PreviewKeyDown"/>
+            <TextBlock Text="." VerticalAlignment="Center" FontSize="16" Margin="5,0"/>
+            <TextBox x:Name="Octet2" Width="50" Height="30" MaxLength="3"
+                     TextAlignment="Center" FontSize="14"
+                     PreviewTextInput="Octet_PreviewTextInput"
+                     TextChanged="Octet_TextChanged"
+                     PreviewKeyDown="Octet_PreviewKeyDown"/>
+            <TextBlock Text="." VerticalAlignment="Center" FontSize="16" Margin="5,0"/>
+            <TextBox x:Name="Octet3" Width="50" Height="30" MaxLength="3"
+                     TextAlignment="Center" FontSize="14"
+                     PreviewTextInput="Octet_PreviewTextInput"
+                     TextChanged="Octet_TextChanged"
+                     PreviewKeyDown="Octet_PreviewKeyDown"/>
+            <TextBlock Text="." VerticalAlignment="Center" FontSize="16" Margin="5,0"/>
+            <TextBox x:Name="Octet4" Width="50" Height="30" MaxLength="3"
+                     TextAlignment="Center" FontSize="14"
+                     PreviewTextInput="Octet_PreviewTextInput"
+                     TextChanged="Octet_TextChanged"
+                     PreviewKeyDown="Octet_PreviewKeyDown"/>
         </StackPanel>
 
-        <TextBlock Grid.Row="3" x:Name="StatusText" Text="" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+        <!-- Bouton & Progress -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <Button x:Name="Search" Content="Rechercher"
+                    Width="120" Height="35"
+                    Background="#3498DB" Foreground="White"
+                    FontWeight="Bold" BorderThickness="0"
+                    Cursor="Hand"
+                    Click="Search_IP_Click"/>
+            <ProgressBar x:Name="Progress" Width="140" Height="20" Margin="15,0,0,0"
+                         IsIndeterminate="True" Visibility="Collapsed"/>
+        </StackPanel>
 
-        <TextBox x:Name="ResultBox" Grid.Row="4" Margin="0,10,0,0"
-     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
-     IsReadOnly="True" FontFamily="Microsoft Sans Serif"
-     TextAlignment="Center"     
-     HorizontalContentAlignment="Center" />
+        <!-- Statut -->
+        <TextBlock Grid.Row="2" x:Name="StatusText" Text=""
+                   HorizontalAlignment="Center" Margin="0,50,0,0"
+                   FontWeight="Bold" Foreground="#2C3E50"/>
+
+        <!-- Résultat -->
+        <TextBox Grid.Row="3" x:Name="ResultBox" Margin="0,10,0,0"
+                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+                 IsReadOnly="True" FontFamily="Consolas" FontSize="13"
+                 Background="#ECF0F1" BorderBrush="#BDC3C7"
+                 Padding="10" />
     </Grid>
 </Window>
